@@ -2259,28 +2259,40 @@ function pinZ(k,r){ const P=PIN[k]; return P&&P.lab&&P.lab(r)?50:10; }
 function pmap(id,rows,emptyMsg,keep){ const w=$('#'+id+'W'), box=$('#'+id+'C'), msg=$('#'+id+'M'); w.hidden=false;
   rows=rows.filter(x=>x.la&&x.lo); if(!rows.length){ msg.textContent=emptyMsg||'지도에 표시할 곳이 없습니다.'; return; }
   const v=rows.map(x=>x.val).filter(Boolean), mn=v.length?Math.min(...v):0;
-  loadNV(()=>{ let M=GM[id]; if(!M){ box.innerHTML=''; M=GM[id]={map:new naver.maps.Map(box,{center:new naver.maps.LatLng(36.4,127.8),zoom:7}),mk:[]}; M.iw=new naver.maps.InfoWindow({content:'',maxWidth:280,borderWidth:1}); if(id==='olMap') naver.maps.Event.addListener(M.map,'dragend',()=>setTimeout(olPan,50)); }
+  loadNV(()=>{ let M=GM[id]; if(!M){ box.innerHTML=''; M=GM[id]={map:new naver.maps.Map(box,{center:new naver.maps.LatLng(36.4,127.8),zoom:7}),mk:[]}; M.iw=new naver.maps.InfoWindow({content:'',maxWidth:280,borderWidth:1}); if(id==='olMap') naver.maps.Event.addListener(M.map,'dragend',()=>setTimeout(olPan,50)); else if(PANC[id]) naver.maps.Event.addListener(M.map,'dragend',()=>setTimeout(()=>panTo(id),50)); }
     M.mk.forEach(m=>m.setMap(null)); M.mk=[]; M.iw.close(); const bd=new naver.maps.LatLngBounds();
     rows.forEach(x=>{ const pos=new naver.maps.LatLng(x.la,x.lo), cls=(x.cls||'')+(x.val&&x.val===mn?' best':'');
       const m=new naver.maps.Marker({position:pos,map:M.map,title:x.nm,zIndex:x.lab?50:10,icon:x.lab?{content:pinHtml(x.lab,cls),anchor:new naver.maps.Point(0,0)}:{content:pinHtml('',cls),anchor:new naver.maps.Point(9,9)}});
       naver.maps.Event.addListener(m,'click',()=>{ M.iw.setContent(`<div style="padding:8px 10px;font-size:13px;line-height:1.5"><b>${esc(x.nm)}</b>${x.info?'<br><span style="color:#1a73e8;font-weight:700">'+x.info+'</span>':''}<br>${esc(x.addr||'')}${ME?'<br>내 위치에서 '+fmtD(dkm(x.la,x.lo)):''}<br>${x.link||''}</div>`); M.iw.open(M.map,m); }); M.mk.push(m); bd.extend(pos); });
     if(ME){ if(M.me) M.me.setMap(null); const p=new naver.maps.LatLng(ME.lat,ME.lng); M.me=new naver.maps.Marker({position:p,map:M.map,zIndex:999,icon:{content:'<span style="display:block;width:16px;height:16px;border-radius:50%;background:#e3342f;border:3px solid #fff;box-shadow:0 0 0 2px #e3342f"></span>',anchor:new naver.maps.Point(11,11)}}); bd.extend(p); }
-    if(!keep) M.map.fitBounds(bd); msg.textContent=`${rows.length.toLocaleString()}곳을 표시했습니다.${mn?' 빨간 칸이 가장 싼 곳입니다.':''} 핀을 누르면 정보가 나옵니다.${id==='olMap'?' 지도를 끌어 옮기면 그 지역 주유소로 바뀝니다.':''}`; },
+    if(!keep&&!PKEEP) M.map.fitBounds(bd); msg.textContent=`${rows.length.toLocaleString()}곳을 표시했습니다.${mn?' 빨간 칸이 가장 싼 곳입니다.':''} 핀을 누르면 정보가 나옵니다.${id==='olMap'||PANC[id]?' 지도를 끌어 옮기면 그 지역으로 바뀝니다.':''}`; },
     ()=>{ msg.textContent='지도를 불러오지 못했습니다. 목록으로 보세요.'; }); }
 function gDraw(k){ const box=$('#gmc_'+k), msg=$('#gmm_'+k), c=NCFG[k]; let rows=(NL[k]||[]).filter(r=>RLA(r));
   if(!$('#'+c[2]).value){ msg.textContent='시·도와 구를 고르거나 "내 위치 가까운 순"을 누르세요.'; return; }
   const CAP=$('#'+c[3])&&$('#'+c[3]).value?2000:600; const cut=rows.length>CAP; rows=rows.slice(0,CAP);
-  const go=()=>{ let M=GM[k]; if(!M){ box.innerHTML=''; M=GM[k]={map:new naver.maps.Map(box,{center:new naver.maps.LatLng(36.4,127.8),zoom:7}),mk:[]}; M.iw=new naver.maps.InfoWindow({content:'',maxWidth:280,borderWidth:1}); }
+  const go=()=>{ let M=GM[k]; if(!M){ box.innerHTML=''; M=GM[k]={map:new naver.maps.Map(box,{center:new naver.maps.LatLng(36.4,127.8),zoom:7}),mk:[]}; M.iw=new naver.maps.InfoWindow({content:'',maxWidth:280,borderWidth:1}); naver.maps.Event.addListener(M.map,'dragend',()=>setTimeout(()=>gPan(k),50)); }
     M.mk.forEach(m=>m.setMap(null)); M.mk=[]; M.iw.close(); const bd=new naver.maps.LatLngBounds();
     rows.forEach(r=>{ const pos=new naver.maps.LatLng(RLA(r),RLO(r)); const m=new naver.maps.Marker({position:pos,map:M.map,title:r[3],icon:pinIcon(k,r,rows),zIndex:pinZ(k,r)});
       naver.maps.Event.addListener(m,'click',()=>{ M.iw.setContent(`<div style="padding:8px 10px;font-size:13px;line-height:1.5"><b>${esc(r[3])}</b>${PIN[k]&&PIN[k].info?'<br><span style="color:#1a73e8;font-weight:700">'+PIN[k].info(r)+'</span>':''}<br>${esc(r[5]||'')}${ME?'<br>내 위치에서 '+fmtD(dkm(RLA(r),RLO(r))):''}<br>${nl(KIDS.sido[r[0]],r[1],r[5],r[3],r[2])}</div>`); M.iw.open(M.map,m); }); M.mk.push(m); bd.extend(pos); });
-    if(ME&&NEAR[k]){ if(M.me) M.me.setMap(null); const p=new naver.maps.LatLng(ME.lat,ME.lng); M.me=new naver.maps.Marker({position:p,map:M.map,zIndex:999,icon:{content:'<span style="display:block;width:16px;height:16px;border-radius:50%;background:#e3342f;border:3px solid #fff;box-shadow:0 0 0 2px #e3342f"></span>',anchor:new naver.maps.Point(11,11)}}); M.map.setCenter(p); M.map.setZoom(14); }
+    if(GPAN[k]){}
+    else if(ME&&NEAR[k]){ if(M.me) M.me.setMap(null); const p=new naver.maps.LatLng(ME.lat,ME.lng); M.me=new naver.maps.Marker({position:p,map:M.map,zIndex:999,icon:{content:'<span style="display:block;width:16px;height:16px;border-radius:50%;background:#e3342f;border:3px solid #fff;box-shadow:0 0 0 2px #e3342f"></span>',anchor:new naver.maps.Point(11,11)}}); M.map.setCenter(p); M.map.setZoom(14); }
     else if(rows.length) M.map.fitBounds(bd,{top:20,right:20,bottom:20,left:20});
-    msg.textContent=`${rows.length.toLocaleString()}곳을 지도에 표시했습니다.${cut?' 구를 고르면 더 보입니다.':''} 핀을 누르면 정보가 나옵니다.`; };
+    msg.textContent=`${rows.length.toLocaleString()}곳을 지도에 표시했습니다.${cut?' 구를 고르면 더 보입니다.':''} 핀을 누르면 정보가 나옵니다. 지도를 끌어 옮기면 그 지역으로 바뀝니다.`; };
   loadNV(go,()=>{ msg.textContent='지도를 불러오지 못했습니다. 목록으로 보세요.'; }); }
 Object.keys(NCFG).forEach(k=>{ const fn=NCFG[k][1], o=window[fn]; if(typeof o!=='function') return; window[fn]=function(...a){ nearBar(k); const r=o.apply(this,a); nearAfter(k); return r; }; });
 
 // ---- 주유소·캠핑장 지도 (가격 핀) ----
+let PKEEP=false; const GPAN={};
+function setSel(id,val){ const el=$('#'+id); if(!el||val==null) return false; val=String(val); const o=[...el.options].find(o=>o.value===val)||[...el.options].find(o=>o.textContent.trim().startsWith(val)); if(!o||el.value===o.value) return false; el.value=o.value; el.dispatchEvent(new Event('change')); return true; }
+function nearRow(L,la,lo,M){ const c=M.map.getCenter(), cy=c.lat(), cx=c.lng(); let best=null,bd=1e18; L.forEach(r=>{ const a=la(r),b=lo(r); if(!a) return; const d=(a-cy)**2+(b-cx)**2; if(d<bd){bd=d;best=r;} }); return best; }
+const PANC={cgMap:{all:()=>CAMPG.rows,la:r=>r[15],lo:r=>r[16],si:r=>r[2],gu:r=>r[3],s:'cgSido',g:'cgGu'},
+ xbMap:{all:()=>SANHU,la:r=>XLA(r),lo:r=>XLO(r),si:r=>r[0],gu:r=>r[1],s:'bSido',g:'bGu'},
+ xhMap:{all:()=>HELP.rows,la:r=>XLA(r),lo:r=>XLO(r),si:r=>r[0],gu:r=>r[1],s:'hSido',g:'hGu'},
+ aMap:{all:()=>Object.keys(ACA).flatMap(si=>ACA[si].r.map(r=>[+si,r])),la:x=>x[1][x[1].length-2],lo:x=>x[1][x[1].length-1],si:x=>x[0],gu:x=>ACA[x[0]].g[x[1][0]],s:'aSido',g:'aGu'}};
+function panTo(id){ const M=GM[id], C=PANC[id]; if(!M||!C) return; let best; try{ best=nearRow(C.all(),C.la,C.lo,M); }catch(e){ return; } if(!best) return;
+  PKEEP=true; try{ setSel(C.s,C.si(best)); setSel(C.g,C.gu(best)); }finally{ PKEEP=false; } }
+function gPan(k){ const M=GM[k], c=NCFG[k]; if(!M||!c) return; let best; try{ best=nearRow(c[4](),RLA,RLO,M); }catch(e){ return; } if(!best) return;
+  GPAN[k]=true; try{ setSel(c[2],best[0]); if(c[3]) setSel(c[3],best[1]); }finally{ GPAN[k]=false; } }
 let olLast=null,cgLast=null;
 let olNoMap=false;
 function olRow(s,code){ const a=OIL.avg[code]||{n:''}; return {la:s[4],lo:s[5],nm:s[0],val:s[2],lab:s[2].toLocaleString()+'원',info:(olPK==='B027'?'휘발유 ':'경유 ')+s[2].toLocaleString()+'원 · '+esc(s[1]),addr:s[3],link:nl(olSd(a.n),a.n.split(' ').slice(1).join(' '),s[3],s[0],'')}; }
