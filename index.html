@@ -940,13 +940,13 @@ body[data-grp="isa"] .shop-c,body:not([data-grp="isa"]) .shop-i{display:none}
   <div class="bctl">
     <select id="spSido" aria-label="시도"></select><select id="spGu" aria-label="시군구"></select><select id="spDong" aria-label="동"></select>
     <div class="seg" id="spSort"><button type="button" data-k="nm" aria-pressed="true">이름순</button><button type="button" data-k="area" aria-pressed="false">넓은 곳 순</button><button type="button" data-k="new" aria-pressed="false">새로 생긴 순</button></div>
-    <label><input type="checkbox" id="spBoth"> <span id="spBothL">헬스장도 같이 하는 곳만</span></label>
+    <label><input type="checkbox" id="spBoth"> <span id="spBothL">헬스장도 같이 하는 곳만</span></label> <label id="spPubW"><input type="checkbox" id="spPub"> 구민체육센터 등 공공 수영장만</label>
     <input id="spQ" type="search" placeholder="이름·도로명 검색" aria-label="검색">
   </div>
   <div class="adslot ad-wide" data-slot="wide"></div>
   <ul class="blist" id="spList"></ul>
   <button type="button" class="bmore" id="spMore" hidden>더 보기</button>
-  <div class="bnote"><b>이렇게 모았습니다</b><br>· 출처: 행정안전부 지방행정 인허가 데이터 「생활_수영장업」「생활_체력단련장업」「생활_종합체육시설업」 조회서비스 · 수집 <b id="spD"></b> · 영업 상태가 "영업/정상"인 곳만 담았습니다.<br>· <b>종합체육시설</b>(수영장·헬스장 등을 한 건물에서 함께 운영하는 큰 센터)은 수영장 탭과 헬스장 탭 양쪽에 모두 넣었습니다.<br>· <b>"같이 하는 곳"</b>은 같은 도로명주소(건물)에 수영장업과 체력단련장업이 함께 신고된 곳입니다.<br>· 헬스장 넓이는 신고된 사업장 면적(㎡)을 평으로 바꾼 값입니다(1평 = 3.3058㎡). 0으로 신고된 곳은 표시하지 않았습니다.</div>
+  <div class="bnote"><b>이렇게 모았습니다</b><br>· 출처: 행정안전부 지방행정 인허가 데이터 「생활_수영장업」「생활_체력단련장업」「생활_종합체육시설업」 조회서비스 · 수집 <b id="spD"></b> · 영업 상태가 "영업/정상"인 곳만 담았습니다.<br>· <b>공공 수영장</b>(구민체육센터·국민체육센터 등): 문화체육관광부 「전국 공공체육시설 현황」(2021, 공공누리 제1유형), 충청북도 「수영장 현황」(2026), 강원특별자치도 「수영장」(2026), 전남광주통합특별시 「수영장 현황」(2025). 위치는 시설 이름·주소로 확인했으며, 그 뒤 문을 닫거나 새로 생긴 곳이 있을 수 있습니다.<br>· <b>종합체육시설</b>(수영장·헬스장 등을 한 건물에서 함께 운영하는 큰 센터)은 수영장 탭과 헬스장 탭 양쪽에 모두 넣었습니다.<br>· <b>"같이 하는 곳"</b>은 같은 도로명주소(건물)에 수영장업과 체력단련장업이 함께 신고된 곳입니다.<br>· 헬스장 넓이는 신고된 사업장 면적(㎡)을 평으로 바꾼 값입니다(1평 = 3.3058㎡). 0으로 신고된 곳은 표시하지 않았습니다.</div>
 </main>
 <main class="in birth" id="v-pila" hidden>
   <div class="loc">홈 &gt; 취미·운동 &gt; <b>우리동네 필라테스·요가</b></div>
@@ -2026,7 +2026,7 @@ function dRender(){ const s=$('#dSido').value,g=$('#dGu').value,d=$('#dDong').va
   $('#dMore').hidden=L.length<=dShow; $('#dMore').textContent=`더 보기 (${Math.min(dShow,L.length)} / ${L.length.toLocaleString()})`; }
 
 // ---- 취미·운동 (수영장·헬스장, 행안부 인허가) ----
-const SPORT_SUM={"d":"2026.11.17","sw":1347,"gy":17257}; let SPORT=null,pK='sw',pOn=false,pSortK='nm',pShow=30;
+const SPORT_SUM={"d":"2026.11.17","sw":1674,"gy":17257,"swp":462}; let SPORT=null,pK='sw',pOn=false,pSortK='nm',pShow=30;
 $('#hSw').textContent=SPORT_SUM.sw.toLocaleString(); $('#hGy').textContent=SPORT_SUM.gy.toLocaleString();
 function SPORT_LOAD(d){ SPORT=d; }
 function pInit(k){ pK=k; const S=k==='sw', w=S?'수영장':'헬스장';
@@ -2034,12 +2034,12 @@ function pInit(k){ pK=k; const S=k==='sw', w=S?'수영장':'헬스장';
   [...$('#spTabs').children].forEach(a=>a.getAttribute('href')&&a.setAttribute('aria-current',a.getAttribute('href')===(S?'#swim':'#gym')));
   $('#spLead').innerHTML=S?`지금 영업 중인 전국 수영장 <b>${SPORT_SUM.sw.toLocaleString()}</b>곳(종합체육시설 포함)을 동네별로 모았습니다. 헬스장을 같이 하는 곳은 따로 표시했습니다.`:`지금 영업 중인 전국 헬스장(체력단련장) <b>${SPORT_SUM.gy.toLocaleString()}</b>곳(종합체육시설 포함)을 동네별로 모았습니다. 수영장을 같이 하는 곳은 따로 표시하고, 신고된 넓이(평)도 보여 드립니다.`;
   $('#spWarn').innerHTML=(S?'<b>수영장 가격은 공개 자료에 없어 노출하지 않았습니다.</b> 수영장·헬스장은 이용료를 사업장 안 게시물과 회원 가입서에 표시해야 하지만, 정부가 모아서 공개하지는 않습니다.<br>· 구청·시설공단이 운영하는 <b>공공 수영장</b>(구민체육센터 등)은 영업 신고 대상이 아니라 대부분 이 목록에 없습니다. 어린이 수영교실 수강료는 사업장에 직접 확인하세요.':'<b>헬스장 가격은 공개 자료에 없어 노출하지 않았습니다.</b> 헬스장은 이용료를 사업장 안 게시물과 회원 가입서에 표시해야 하지만, 정부가 모아서 공개하지는 않습니다. 등록 전 가격·환불 기준·보증보험 가입 여부를 꼭 확인하세요.<br>· <b>필라테스·요가</b>는 체육시설업이 아니라(신고 없이 여는 업종) 대부분 이 목록에 없습니다. <a href="#pila" style="color:var(--main);font-weight:700">필라테스·요가</a> 탭에서 따로 보세요.')+'<br>· 업체가 직접 가격을 등록하면 "직접등록" 표시와 함께 가격이 나갑니다. <a href="#join" style="color:var(--main);font-weight:700">업체 무료등록</a>';
-  $('#spBothL').textContent=S?'헬스장도 같이 하는 곳만':'수영장도 같이 하는 곳만'; $('#spBoth').checked=false;
+  $('#spBothL').textContent=S?'헬스장도 같이 하는 곳만':'수영장도 같이 하는 곳만'; $('#spBoth').checked=false; $('#spPubW').hidden=!S; $('#spPub').checked=false;
   [...$('#spSort').children].forEach(b=>{ if(b.dataset.k==='area') b.style.display=S?'none':''; }); if(S&&pSortK==='area'){ pSortK='nm'; [...$('#spSort').children].forEach(x=>x.setAttribute('aria-pressed',x.dataset.k==='nm')); }
   if(!pOn){ pOn=true;
     $('#spSido').addEventListener('change',()=>{pGu(); pShow=30; pRender();});
     $('#spGu').addEventListener('change',()=>{pDong(); pShow=30; pRender();});
-    ['#spDong','#spBoth'].forEach(s=>$(s).addEventListener('change',()=>{pShow=30; pRender();}));
+    ['#spDong','#spBoth','#spPub'].forEach(s=>$(s).addEventListener('change',()=>{pShow=30; pRender();}));
     $('#spQ').addEventListener('input',()=>{pShow=30; pRender();});
     $('#spSort').addEventListener('click',e=>{const b=e.target.closest('[data-k]'); if(!b) return; pSortK=b.dataset.k; [...$('#spSort').children].forEach(x=>x.setAttribute('aria-pressed',x===b)); pShow=30; pRender();});
     $('#spMore').addEventListener('click',()=>{pShow+=30; pRender();}); ads(); }
@@ -2053,14 +2053,14 @@ function pGu(){ const s=$('#spSido').value,c={}; if(s!=='') pRows().forEach(r=>{
   $('#spGu').innerHTML='<option value="">'+(s!==''?KIDS.sido[s]+' 전체':'시군구 전체')+'</option>'+G.map(g=>`<option value="${esc(g)}">${esc(g)} (${c[g]})</option>`).join(''); $('#spGu').disabled=s===''; pDong(); }
 function pDong(){ const s=$('#spSido').value,g=$('#spGu').value,c={}; if(g) pRows().forEach(r=>{if(r[0]==s&&r[1]===g&&r[2]) c[r[2]]=(c[r[2]]||0)+1;}); const D=Object.keys(c).sort((a,b)=>a.localeCompare(b,'ko'));
   $('#spDong').innerHTML='<option value="">동 전체</option>'+D.map(d=>`<option value="${esc(d)}">${esc(d)} (${c[d]})</option>`).join(''); $('#spDong').disabled=!g; }
-function pRender(){ if(!SPORT) return; const S=pK==='sw',s=$('#spSido').value,g=$('#spGu').value,d=$('#spDong').value,B=$('#spBoth').checked,q=$('#spQ').value.trim().replace(/\s/g,'');
-  const L=pRows().filter(r=>(s===''||r[0]==s)&&(!g||r[1]===g)&&(!d||r[2]===d)&&(!B||r[4]>0)&&(!q||(r[3]+r[5]).replace(/\s/g,'').includes(q)));
+function pRender(){ if(!SPORT) return; const S=pK==='sw',s=$('#spSido').value,g=$('#spGu').value,d=$('#spDong').value,B=$('#spBoth').checked,PB=S&&$('#spPub').checked,q=$('#spQ').value.trim().replace(/\s/g,'');
+  const L=pRows().filter(r=>(s===''||r[0]==s)&&(!g||r[1]===g)&&(!d||r[2]===d)&&(!B||r[4]>0)&&(!PB||r[9])&&(!q||(r[3]+r[5]).replace(/\s/g,'').includes(q)));
   const area=[s!==''?KIDS.sido[s]:'전국',g,d].filter(Boolean).join(' '), both=L.filter(r=>r[4]===1).length, cp=L.filter(r=>r[4]===2).length;
-  $('#spSum').innerHTML=`<div><span>${esc(area)} ${S?'수영장':'헬스장'}</span><b>${L.length.toLocaleString()}</b><small>곳</small></div><div><span>${S?'헬스장도':'수영장도'} 같이 하는 곳</span><b>${both.toLocaleString()}</b><small>곳</small></div><div><span>종합체육시설</span><b>${cp.toLocaleString()}</b><small>곳</small></div><div><span>가격</span><b style="font-size:15px">공개 자료 없음</b></div>`;
+  $('#spSum').innerHTML=`<div><span>${esc(area)} ${S?'수영장':'헬스장'}</span><b>${L.length.toLocaleString()}</b><small>곳</small></div><div><span>${S?'헬스장도':'수영장도'} 같이 하는 곳</span><b>${both.toLocaleString()}</b><small>곳</small></div><div><span>종합체육시설</span><b>${cp.toLocaleString()}</b><small>곳</small></div>${S?`<div><span>공공 수영장</span><b>${L.filter(r=>r[9]).length.toLocaleString()}</b><small>곳 · 구민체육센터 등</small></div>`:'<div><span>가격</span><b style="font-size:15px">공개 자료 없음</b></div>'}`;
   if(pSortK==='area') L.sort((a,b)=>b[7]-a[7]); else if(pSortK==='new') L.sort((a,b)=>(b[8]||'0').localeCompare(a[8]||'0')||a[3].localeCompare(b[3],'ko')); else L.sort((a,b)=>a[3].localeCompare(b[3],'ko'));
   const tag=r=>r[4]===2?'<span class="kty k1">종합체육시설 · 수영장+헬스장</span>':r[4]===1?`<span class="kty k1">${S?'헬스장':'수영장'}도 같이</span>`:'';
   NS('p',L); $('#spList').innerHTML=L.length?L.slice(0,pShow).map(r=>{const map=nl(KIDS.sido[r[0]],r[1],r[5],r[3],r[2]), py=r[7]?Math.round(r[7]/3.3058):0;
-    return `<li><div><div class="nm">${nmA(r[3],r[1])}${tag(r)}${r[9]?'<span class="kty">공립</span>':''}</div><div class="ad">${r[2]?esc(r[2])+' · ':''}${esc(r[5])}</div><div class="ad">${r[8]?esc(r[8])+'년 신고':''}</div><div class="lk">${r[6]?`<a href="tel:${esc(r[6])}">☎ ${esc(r[6])}</a>`:''}${map}</div></div><div class="pr"><b style="font-size:16px">${py?'약 '+py.toLocaleString()+'평':(r[4]===2?'종합체육시설':S?'수영장':'헬스장')}</b><span class="o">${py?r[7].toLocaleString()+'㎡ · ':''}가격 비공개</span></div></li>`;}).join(''):'<li><div>조건에 맞는 곳이 없습니다.</div></li>';
+    return `<li><div><div class="nm">${nmA(r[3],r[1])}${tag(r)}${r[9]?'<span class="kty k1">공공</span>':''}</div><div class="ad">${r[2]?esc(r[2])+' · ':''}${esc(r[5])}</div><div class="ad">${r[8]?esc(r[8])+'년 신고':(r[9]?'공공 체육시설 · 이용료는 시설에 문의':'')}</div><div class="lk">${r[6]?`<a href="tel:${esc(r[6])}">☎ ${esc(r[6])}</a>`:''}${map}</div></div><div class="pr"><b style="font-size:16px">${py?'약 '+py.toLocaleString()+'평':(r[4]===2?'종합체육시설':S?'수영장':'헬스장')}</b><span class="o">${py?r[7].toLocaleString()+'㎡ · ':''}가격 비공개</span></div></li>`;}).join(''):'<li><div>조건에 맞는 곳이 없습니다.</div></li>';
   $('#spMore').hidden=L.length<=pShow; $('#spMore').textContent=`더 보기 (${Math.min(pShow,L.length)} / ${L.length.toLocaleString()})`; }
 
 // ---- 필라테스·요가 (소상공인 상가정보) ----
