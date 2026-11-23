@@ -946,7 +946,7 @@ body[data-grp="isa"] .shop-c,body:not([data-grp="isa"]) .shop-i{display:none}
   <div class="adslot ad-wide" data-slot="wide"></div>
   <ul class="blist" id="spList"></ul>
   <button type="button" class="bmore" id="spMore" hidden>더 보기</button>
-  <div class="bnote"><b>이렇게 모았습니다</b><br>· 출처: 행정안전부 지방행정 인허가 데이터 「생활_수영장업」「생활_체력단련장업」「생활_종합체육시설업」 조회서비스 · 수집 <b id="spD"></b> · 영업 상태가 "영업/정상"인 곳만 담았습니다.<br>· <b>공공 수영장</b>(구민체육센터·국민체육센터 등): 문화체육관광부 「전국 공공체육시설 현황」(2021, 공공누리 제1유형), 충청북도 「수영장 현황」(2026), 강원특별자치도 「수영장」(2026), 전남광주통합특별시 「수영장 현황」(2025). 위치는 시설 이름·주소로 확인했으며, 그 뒤 문을 닫거나 새로 생긴 곳이 있을 수 있습니다.<br>· <b>종합체육시설</b>(수영장·헬스장 등을 한 건물에서 함께 운영하는 큰 센터)은 수영장 탭과 헬스장 탭 양쪽에 모두 넣었습니다.<br>· <b>"같이 하는 곳"</b>은 같은 도로명주소(건물)에 수영장업과 체력단련장업이 함께 신고된 곳입니다.<br>· 헬스장 넓이는 신고된 사업장 면적(㎡)을 평으로 바꾼 값입니다(1평 = 3.3058㎡). 0으로 신고된 곳은 표시하지 않았습니다.</div>
+  <div class="bnote"><b>이렇게 모았습니다</b><br>· 출처: 행정안전부 지방행정 인허가 데이터 「생활_수영장업」「생활_체력단련장업」「생활_종합체육시설업」 조회서비스 · 수집 <b id="spD"></b> · 영업 상태가 "영업/정상"인 곳만 담았습니다.<br>· <b>공공 수영장</b>(구민체육센터·국민체육센터 등): 서울특별시 「공공체육시설 현황」(2024), 문화체육관광부 「전국 공공체육시설 현황」(2021, 공공누리 제1유형), 충청북도 「수영장 현황」(2026), 강원특별자치도 「수영장」(2026), 전남광주통합특별시 「수영장 현황」(2025). 위치는 시설 이름·주소로 확인했으며, 그 뒤 문을 닫거나 새로 생긴 곳이 있을 수 있습니다.<br>· <b>종합체육시설</b>(수영장·헬스장 등을 한 건물에서 함께 운영하는 큰 센터)은 수영장 탭과 헬스장 탭 양쪽에 모두 넣었습니다.<br>· <b>"같이 하는 곳"</b>은 같은 도로명주소(건물)에 수영장업과 체력단련장업이 함께 신고된 곳입니다.<br>· 헬스장 넓이는 신고된 사업장 면적(㎡)을 평으로 바꾼 값입니다(1평 = 3.3058㎡). 0으로 신고된 곳은 표시하지 않았습니다.</div>
 </main>
 <main class="in birth" id="v-pila" hidden>
   <div class="loc">홈 &gt; 취미·운동 &gt; <b>우리동네 필라테스·요가</b></div>
@@ -2026,7 +2026,7 @@ function dRender(){ const s=$('#dSido').value,g=$('#dGu').value,d=$('#dDong').va
   $('#dMore').hidden=L.length<=dShow; $('#dMore').textContent=`더 보기 (${Math.min(dShow,L.length)} / ${L.length.toLocaleString()})`; }
 
 // ---- 취미·운동 (수영장·헬스장, 행안부 인허가) ----
-const SPORT_SUM={"d":"2026.11.17","sw":1674,"gy":17257,"swp":462}; let SPORT=null,pK='sw',pOn=false,pSortK='nm',pShow=30;
+const SPORT_SUM={"d":"2026.11.17","sw":1683,"gy":17257,"swp":470}; let SPORT=null,pK='sw',pOn=false,pSortK='nm',pShow=30;
 $('#hSw').textContent=SPORT_SUM.sw.toLocaleString(); $('#hGy').textContent=SPORT_SUM.gy.toLocaleString();
 function SPORT_LOAD(d){ SPORT=d; }
 function pInit(k){ pK=k; const S=k==='sw', w=S?'수영장':'헬스장';
