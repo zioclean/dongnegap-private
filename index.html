@@ -437,6 +437,20 @@ footer .fckbar span{font-size:12.5px;font-weight:700;white-space:nowrap}
 .ckday{display:block;width:100%;height:40px;margin-top:4px;border:0;background:none;color:var(--sub2);font:inherit;font-size:13px;cursor:pointer}
 :root[data-theme="dark"] footer .fckbar{background:#2A1515;border-color:#6B2B2B;color:#FF8A8A}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) footer .fckbar{background:#2A1515;border-color:#6B2B2B;color:#FF8A8A}}
+.mshop{margin:12px 0 16px;padding:12px 14px;border:1.5px solid #FFC9A0;background:#FFF6EE;border-radius:12px}
+.mshd{display:flex;align-items:center;gap:6px;color:#D9480F;margin-bottom:8px}.mshd b{font-size:15px;color:#9A3412;flex:1;min-width:0}.mshd a{font-size:13px;font-weight:700;color:#D9480F;white-space:nowrap}
+.mschips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.mschips::-webkit-scrollbar{display:none}
+.msc{flex:0 0 auto;display:inline-flex;flex-direction:column;gap:1px;padding:8px 12px;background:#fff;border:1px solid #FFD8BD;border-radius:10px;font-size:14px;font-weight:700;color:#1F2937;text-decoration:none;white-space:nowrap}
+.msc small{font-size:11.5px;font-weight:600;color:#D9480F}
+.msnote{margin:8px 0 0;font-size:11.5px;color:var(--sub2)}
+.hshop{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:10px}
+.hsc{display:flex;flex-direction:column;gap:3px;padding:12px;border:1px solid #FFD8BD;background:#FFF6EE;border-radius:10px;text-decoration:none;color:#1F2937}
+.hsc .t{font-size:12px;font-weight:800;color:#D9480F}.hsc b{font-size:13.5px;line-height:1.4;word-break:keep-all}.hsc .g{font-size:12px;font-weight:700;color:#9A3412}
+.hsad{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:100%;height:100%;text-decoration:none!important;color:var(--fg)!important;padding:0 12px;text-align:center;word-break:keep-all}
+.hsad b{font-size:14px;color:var(--fg)}.hsad small{font-size:12px;color:var(--main);font-weight:700}
+.hubad{margin:14px 0 4px}
+:root[data-theme="dark"] .mshop,:root[data-theme="dark"] .hsc{background:#2A1D14;border-color:#5C3A22}:root[data-theme="dark"] .msc{background:#1F2937;border-color:#5C3A22;color:#F3F4F6}:root[data-theme="dark"] .mshd b,:root[data-theme="dark"] .hsc b{color:#FFD8BD}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mshop,:root:not([data-theme="light"]) .hsc{background:#2A1D14;border-color:#5C3A22}:root:not([data-theme="light"]) .msc{background:#1F2937;border-color:#5C3A22;color:#F3F4F6}:root:not([data-theme="light"]) .mshd b,:root:not([data-theme="light"]) .hsc b{color:#FFD8BD}}
 footer .fsm{font-size:11.5px;color:var(--sub2)}
 footer .fcp{margin-top:14px;font-size:11.5px;color:var(--sub2)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) footer .fwarn{background:#2A1515;border-color:#6B2B2B}:root:not([data-theme="light"]) footer .fwarn h4,:root:not([data-theme="light"]) footer .fwarn a{color:#FF8A8A}}
@@ -478,7 +492,7 @@ body[data-grp="isa"] .shop-c,body:not([data-grp="isa"]) .shop-i{display:none}
 .sch{border-color:#1F2937!important}.sch button{background:#1F2937!important;color:#fff!important}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sch{border-color:#D1D5DB!important}:root:not([data-theme="light"]) .sch button{background:#D1D5DB!important;color:#111!important}}:root[data-theme="dark"] .sch{border-color:#D1D5DB!important}:root[data-theme="dark"] .sch button{background:#D1D5DB!important;color:#111!important}
 .hub .hban{margin:2px 0 16px}
-@media (max-width:700px){.gnb .util{font-size:12.5px;gap:8px;margin-left:auto}.gnb .util a[href="#shop"]{display:none}.gnb .in{gap:8px}.locbtn{font-size:13.5px;padding:0 2px}}
+@media (max-width:700px){.gnb .util{font-size:12.5px;gap:8px;margin-left:auto}.gnb .util a[href="#shop"]{background:#FFF1E6;color:#D9480F;font-weight:800;padding:3px 9px;border-radius:14px}.gnb .util .reg-link{display:none}.gnb .in{gap:8px}.locbtn{font-size:13.5px;padding:0 2px}}
 </style>
 
 <header class="gnb"><div class="in">
@@ -696,10 +710,12 @@ body[data-grp="isa"] .shop-c,body:not([data-grp="isa"]) .shop-i{display:none}
   <h1 class="sr">동네값 — 우리 동네 생활비, 공개된 가격만</h1>
   <div class="hban" id="hBan" aria-roledescription="배너" aria-label="오늘의 동네값"></div>
   <nav class="hico" aria-label="분야 바로가기"><a href="#pharm"><span style="background:#18A06B"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4zM12 8v8M8 12h8"></path></svg></span>병원·약국</a><a href="#oil"><span style="background:#F2711C"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v15M3 20h12M6 8h6M14 9h3l2 2v6a1.5 1.5 0 0 1-3 0v-3h-2"></path></svg></span>주유소</a><a href="#camp"><span style="background:#3D9A3F"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20L12 4l9 16zM9 20l3-6 3 6"></path></svg></span>캠핑·여행</a><a href="#kids"><span style="background:#2F6FDB"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19a2 2 0 0 1 2-2h13"></path></svg></span>교육</a><a href="#birth"><span style="background:#E05A8C"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM5 21a7 7 0 0 1 14 0"></path></svg></span>출산·육아</a><a href="#clean"><span style="background:#16A2B8"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3l-4 9M7 12h8l2 9H5zM9 16v5M13 16v5"></path></svg></span>청소</a><a href="#isa"><span style="background:#6A55D6"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h11v10H2zM13 9h4l4 4v3h-8M6 19a2 2 0 1 0 0-.01M17 19a2 2 0 1 0 0-.01"></path></svg></span>이사</a><a href="#wed"><span style="background:#D9477A"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM9 3h6l-3 4z"></path></svg></span>결혼</a><a href="#vet"><span style="background:#B7791F"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 9a1.8 1.8 0 1 0 0-.01M16 9a1.8 1.8 0 1 0 0-.01M5 13a1.6 1.6 0 1 0 0-.01M19 13a1.6 1.6 0 1 0 0-.01M12 13c-3 0-5 3-5 5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2c0-2-2-5-5-5z"></path></svg></span>반려동물</a><a href="#swim"><span style="background:#0E9F8E"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"></path></svg></span>운동</a><a href="#care"><span style="background:#C2410C"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"></path></svg></span>실버케어</a><a href="#apt"><span style="background:#5B6B7C"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5l8-3v19M12 9h8v12M4 21h16M8 8h1M8 12h1M8 16h1M16 13h1M16 17h1"></path></svg></span>아파트</a><a href="#fair"><span style="background:#7C3AED"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v14H3zM3 9h18M8 3v4M16 3v4"></path></svg></span>박람회</a><a href="#shop"><span style="background:#475569"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.5 12h-11zM9 7a3 3 0 0 1 6 0"></path></svg></span>쇼핑비교</a></nav>
+  <section class="hsec" aria-labelledby="hShopT"><div class="hhd"><h2 id="hShopT">쇼핑비교 · 많이 사는 물건 최저가</h2><a href="#shop">전체보기 ›</a></div><div class="hshop" id="hShop"></div><p class="msnote" style="margin-top:6px">쇼핑몰 검색 결과로 이동 · 구매 시 운영사가 수수료를 받을 수 있습니다(제휴)</p></section>
   <div class="hgap"></div>
   <section class="hsec" aria-labelledby="hLowT"><div class="hhd"><h2 id="hLowT">우리 동네 최저가</h2><a href="#oil">전체보기 ›</a></div>
     <div class="htab" role="tablist" id="hLowTab"><button type="button" role="tab" aria-selected="true" data-p="B027">휘발유</button><button type="button" role="tab" aria-selected="false" data-p="D047">경유</button></div>
     <ol class="hlist" id="hLow"></ol></section>
+  <div class="adslot ad-wide hubad" data-slot="wide"></div>
   <a class="hstrip" href="#clean"><b>입주청소 추가금, 계약 전에 막는 법</b><span>체크리스트 ›</span></a>
   <div class="hgap"></div>
   <section class="hsec" aria-labelledby="hPedT"><div class="hhd"><h2 id="hPedT">가까운 소아과 · 오늘 진료시간</h2><small class="hbase" id="hBase"></small><a href="#ped">전체보기 ›</a></div><ul class="hlist" id="hPedL"></ul></section>
@@ -1570,12 +1586,15 @@ const SLOT_NAME={left:'왼쪽 날개<br>160×600',top:'상단 배너',wide:'중�
 function pickAd(k){const L=ADS[k]||[]; return L.find(a=>a.region===region)||L.find(a=>!a.region)||null;}
 const AD_DEMO=/addemo/.test(location.search);
 function adHTML(k){const a=pickAd(k);
-  if(!a&&!AD_DEMO) return '';
+  if(MED.includes(document.body.dataset.view||'')) return '';
+  if(!a&&!AD_DEMO){ if(NET.includes(k)) return ''; return houseAd(); }
   if(a) return `<span class="lb">광고</span><a href="${esc(safeUrl(a.url))}" target="_blank" rel="noopener sponsored" style="display:block;width:100%;height:100%"><img src="${esc(a.img)}" alt="${esc(a.alt||'')}" style="width:100%;height:100%;object-fit:cover"></a>`;
   if(NET.includes(k)) return `<span class="lb">광고</span><b>${SLOT_NAME[k]}</b><small>구글 애드센스 · 카카오 애드핏 자리</small>`;
   return `<span class="lb">광고</span><b>${SLOT_NAME[k]} · ${nm()}</b><a href="#ad">광고 문의</a>`;}
 // 업체에 파는 자리: top·wide·inline·sponsor / 우리가 네트워크 광고(애드센스·애드핏) 붙이는 자리: left·side·side2·mbar
 const NET=['left','side','side2','mbar'];
+const MED=['obgy','ped','ent','im','pharm'];
+function houseAd(){ let g='우리'; try{ g=(typeof AREA!=='undefined'&&AREA&&AREA.gu)||'우리'; }catch(e){} return `<span class="lb">광고</span><a class="hsad" href="#ad"><b>${esc(g)} 동네 손님에게 우리 가게를 알려 보세요</b><small>이 자리 광고 신청 · 오픈 기념 3개월 무료 ›</small></a>`; }
 function ads(){document.querySelectorAll('[data-slot]').forEach(el=>{const h=adHTML(el.dataset.slot); el.innerHTML=h; el.style.display=h?'':'none';}); topAds();}
 // 상단 배너: 한 줄에 3칸(모바일 1칸), 광고가 더 많으면 4초마다 다음 줄로 내려감
 let topIdx=0, topTimer=null;
@@ -1583,7 +1602,8 @@ function topAds(){
   const box=$('#topAds'); if(!box) return;
   const N=nm();
   let L=(ADS.top||[]).filter(a=>!a.region||a.region===region);
-  box.style.display=(L.length||AD_DEMO)?'':'none'; if(!L.length&&!AD_DEMO){ box.innerHTML=''; return; }
+  if(MED.includes(document.body.dataset.view||'')){ box.style.display='none'; box.innerHTML=''; return; }
+  box.style.display=''; if(!L.length&&!AD_DEMO){ box.innerHTML='<div class="pg" style="grid-template-columns:1fr"><div class="adslot">'+houseAd()+'</div></div>'; return; }
   const cells=L.length?L.map(a=>`<div class="adslot"><span class="lb">광고</span><a href="${esc(safeUrl(a.url))}" target="_blank" rel="noopener sponsored" style="display:block;width:100%;height:100%"><img src="${esc(a.img)}" alt="${esc(a.alt||'')}" style="width:100%;height:100%;object-fit:cover"></a></div>`)
     :['A','B','C','D','E','F'].map(x=>`<div class="adslot"><span class="lb">광고</span><b>상단 배너 ${x} · ${N}</b><a href="#ad">광고 문의</a></div>`);
   const per=matchMedia('(max-width:700px)').matches?1:3;
@@ -3009,6 +3029,26 @@ function ckOpen(){ const p=$('#ckPop'); if(p){ p.hidden=false; const b=p.querySe
 function ckAuto(){ let k=''; try{ k=localStorage.getItem('ckDay')||''; }catch(e){} const t=new Date(Date.now()+9*3600e3).toISOString().slice(0,10); if(k===t) return; if(document.querySelector('.gpop:not([hidden]),#introPop:not([hidden])')) return; ckOpen(); }
 document.addEventListener('click',e=>{ const c=e.target.closest&&e.target.closest('[data-ckc]'); if(c){ $('#ckPop').hidden=true; if(c.dataset.ckc==='2'){ try{ localStorage.setItem('ckDay',new Date(Date.now()+9*3600e3).toISOString().slice(0,10)); }catch(e){} } return; } if(e.target.id==='ckPop'){ e.target.hidden=true; return; } if(e.target.closest&&e.target.closest('#fckBtn')) ckOpen(); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ const p=$('#ckPop'); if(p&&!p.hidden) p.hidden=true; } });
+
+const MTH={birth:'birth',helper:'birth',kids:'kids',kinder:'kids',aca:'kids',sch:'kids',univ:'kids',study:'kids',dojo:'sport',sport:'sport',pila:'sport',golf:'sport',pet:'pet',sil:'sil',apt:'apt',wed:'wed',mart:'apt'};
+const CART='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L22 7H6"/></svg>';
+function mShopHTML(k){ const S=k&&SHOPS[k];
+  if(!S){ const ks=SHORD.filter(x=>SHOPS[x]).slice(0,6); return `<div class="mshop"><div class="mshd">${CART}<b>주제별 쇼핑비교</b><a href="#shop">전체 보기 ›</a></div><div class="mschips">${ks.map(x=>`<a href="#shop-${x}" class="msc">${esc(SHLB[x])}</a>`).join('')}</div><p class="msnote">쇼핑몰 검색 결과로 이동합니다 · 구매 시 운영사가 수수료를 받을 수 있습니다(제휴)</p></div>`; }
+  const it=S.items.slice(0,5);
+  return `<div class="mshop"><div class="mshd">${CART}<b>${esc(S.title)}</b><a href="#shop-${k}">전체 ${S.items.length}가지 ›</a></div><div class="mschips">${it.map(x=>`<a href="${esc(x.L[0][1])}" target="_blank" rel="noopener sponsored" class="msc" data-m="${esc(x.L[0][0])}">${esc(x.k)} <small>최저가 보기</small></a>`).join('')}</div><p class="msnote">쇼핑몰 검색 결과로 이동합니다 · 구매 시 운영사가 수수료를 받을 수 있습니다(제휴)</p></div>`; }
+function monInject(){ try{ const v=VIEW; if(MED.includes(v)||v==='hub'||v==='shop') { if(v==='hub') hubShop(); ads(); return; }
+  const el=$('#v-'+v); if(!el) { ads(); return; }
+  const k=v==='main'?(typeof CAT!=='undefined'&&CAT==='isa'?'isa':'clean'):(MTH[v]||null);
+  let box=el.querySelector('.mshop'); const html=mShopHTML(k);
+  if(box){ if(box.dataset.k!==String(k)){ box.outerHTML=html; box=el.querySelector('.mshop'); } }
+  else { const at=el.querySelector('p.lead')||el.querySelector('h1')||el.querySelector('.loc'); if(at) at.insertAdjacentHTML('afterend',html); else el.insertAdjacentHTML('afterbegin',html); box=el.querySelector('.mshop'); }
+  if(box){ box.dataset.k=String(k); box.querySelectorAll('.msc[data-m]').forEach(a=>{ if(!a.dataset.b){ a.dataset.b=1; a.addEventListener('click',()=>shopGo(a.dataset.m)); } }); }
+  if(!el.querySelector('[data-slot="wide"]')) el.insertAdjacentHTML('beforeend','<div class="adslot ad-wide" data-slot="wide"></div>');
+  ads(); }catch(e){} }
+function hubShop(){ const b=$('#hShop'); if(!b||b.dataset.on) return; b.dataset.on=1; const ks=SHORD.filter(x=>SHOPS[x]);
+  b.innerHTML=ks.map(x=>{const S=SHOPS[x]; return `<a href="#shop-${x}" class="hsc"><span class="t">${esc(SHLB[x])}</span><b>${esc(S.items.slice(0,2).map(i=>i.k).join(' · '))}</b><span class="g">최저가 비교 ›</span></a>`;}).join(''); }
+window.addEventListener('hashchange',()=>setTimeout(monInject,60));
+window.addEventListener('load',()=>setTimeout(monInject,300));
 function hubInit(){ if(!hubOn){ hubOn=true; setTimeout(ckAuto,600); $('#hLowTab').addEventListener('click',e=>{ const b=e.target.closest('[data-p]'); if(!b) return; hubPK=b.dataset.p; [...$('#hLowTab').children].forEach(x=>x.setAttribute('aria-selected',x===b)); hubOil(); });
   document.addEventListener('click',e=>{ if(e.target.closest('.hsetloc')) locOpen(); }); }
   hubRender(); }
@@ -3016,6 +3056,7 @@ document.addEventListener('click',e=>{ const a=e.target.closest&&e.target.closes
 function hubBanner(){ const t=faToday(), lim=new Date(Date.now()+9*3600e3+14*864e5).toISOString().slice(0,10), nf=FAIRS.f.filter(f=>f[5]>=t&&f[4]<=lim).length;
   const nat=(OIL_SUM.nat&&OIL_SUM.nat.B027)||0, my=hubOilK&&OIL&&OIL.low&&OIL.low.B027&&OIL.low.B027[hubOilK]&&OIL.low.B027[hubOilK][0], av=hubOilK&&OIL&&OIL.avg[hubOilK]&&OIL.avg[hubOilK].B027;
   const S=[
+   {h:'#shop',c:'#D9480F',t1:'쇼핑비교 · 제휴',t2:'이사·새 집에 많이 사는<br>물건 최저가 찾기',t3:'쇼핑몰 가격 한 번에 비교 ›',d:'M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L22 7H6M9 20h.01M18 20h.01'},
    my?{h:'#oil',c:'#03A65A',t1:'오피넷 '+((OIL.dd&&OIL.dd.B027)||'')+' 기준',t2:esc(AREA.gu)+' 휘발유<br>최저 '+my[2].toLocaleString()+'원',t3:av?'평균보다 '+(av[0]-my[2]).toLocaleString()+'원 싸요 ›':'가장 싼 주유소 보기 ›',d:'M4 20V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v15M3 20h12M6 8h6M14 9h3l2 2v6a1.5 1.5 0 0 1-3 0v-3h-2'}
      :{h:'#oil',c:'#03A65A',t1:'오피넷 공개 가격',t2:'휘발유 전국 중간<br>'+nat.toLocaleString()+'원',t3:'우리 동네 가장 싼 주유소 보기 ›',d:'M4 20V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v15M3 20h12M6 8h6M14 9h3l2 2v6a1.5 1.5 0 0 1-3 0v-3h-2'},
    {h:'#pharm',c:'#1E3A5F',t1:'국립중앙의료원 공개 영업시간',t2:'밤 10시 넘어 여는 약국<br>'+(PH_SUM.late||0).toLocaleString()+'곳',t3:'공휴일 영업 '+(PH_SUM.hol||0).toLocaleString()+'곳 · 지금 문 연 약국 ›',d:'M10.5 20.5a5 5 0 0 1-7-7l6-6a5 5 0 0 1 7 7zM8.5 8.5l7 7'},
