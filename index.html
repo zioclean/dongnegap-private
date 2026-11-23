@@ -1710,7 +1710,11 @@ function route(){let h=location.hash;
 window.addEventListener('hashchange',route);
 $('#fixForm').addEventListener('submit',e=>{e.preventDefault(); const m=$('#x-msg');
   if(!$('#x-name').value.trim()||!$('#x-tel').value.trim()){m.style.color='var(--red)'; m.textContent='업체명과 회신 연락처를 적어 주세요.'; return;}
-  m.style.color='var(--main)'; m.textContent='시제품 화면이라 실제로 접수되지는 않습니다. 정식 사이트에서는 여기서 바로 접수됩니다.';});
+  const kind=(document.querySelector('input[name=x-kind]:checked')||{}).value||'';
+  const body=['업체명: '+$('#x-name').value.trim(),'요청 종류: '+kind,'내용: '+$('#x-body').value.trim(),'근거 링크: '+$('#x-url').value.trim(),'회신 연락처: '+$('#x-tel').value.trim(),'','(동네값 정보 수정·삭제 요청)'].join('\n');
+  location.href=mailTo('[동네값] 정보 수정·삭제 요청 - '+$('#x-name').value.trim(),body);
+  m.style.color='var(--main)'; m.textContent='메일 앱이 열립니다. 내용 확인 후 [보내기]를 누르면 접수됩니다. 메일 앱이 안 열리면 hope3710@naver.com 으로 같은 내용을 보내 주세요.';});
+function mailTo(sub,body){ return 'mailto:hope3710@naver.com?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(body); }
 const wl=document.querySelector('.wing-l'); const wlTop=()=>{wl.style.top=Math.max(14,126-scrollY)+'px'}; addEventListener('scroll',wlTop,{passive:true}); wlTop();
 document.getElementById('gsec').after(document.getElementById('bld'));
 (function(){const hs=new Set(); const add=L=>L.forEach(r=>{const h=hostOf(r.u)||r.n; hs.add(h);});
@@ -3100,7 +3104,7 @@ function joinMsg(t,err){$('#joinState').innerHTML=t?`<div class="stbox${err?' er
 function disableForm(t){[...$('#regForm').elements].forEach(el=>el.disabled=true); joinMsg(t,true);}
 (async()=>{
   try{ [db,user]=await Promise.all([claude.use('db'),claude.use('user')]); }catch(e){}
-  if(!db){ disableForm('지금 보시는 화면에서는 등록이 저장되지 않습니다. 정식 오픈 때 열립니다.'); return; }
+  if(!db){ joinMsg('작성 후 [등록 신청]을 누르면 메일 앱이 열립니다. [보내기]를 누르면 접수되고, 확인 후 노출됩니다.'); return; }
   uid=user?await user.id():null; admin=user?await user.canEdit():false;
   db.collection('listed').onSnapshot(s=>{SELF=s.docs.map(d=>d.data()); renderAll();},()=>{});
   if(uid){ db.doc('regs/'+uid).onSnapshot(s=>{ if(s.exists){const d=s.data(); joinMsg(d.status==='승인'?'등록 완료 — 지금 노출 중입니다. 고치려면 다시 제출하세요.':d.status==='반려'?'등록이 반려됐습니다. 내용 확인 후 다시 제출해 주세요.':'신청 접수됨 — 확인 중입니다.',d.status==='반려'); fill(d);} },()=>{}); }
@@ -3125,6 +3129,8 @@ $('#regForm').addEventListener('submit',async e=>{
   if(errs.length){ msg.textContent='확인해 주세요: '+errs.join(', '); return; }
   const flags=[]; if(pp&&(pp<7000||pp>35000)) flags.push('평당 단가 범위 밖(7천~3.5만)');
   const doc={name,biz,url,sidos,nego,pp:nego?null:pp,vat:$('#f-vat').value,small:$('#f-small').value.trim(),ext:$('#f-ext').value,extra:$('#f-extra').value.trim(),status:'대기',flags,uid,at:new Date().toISOString()};
+  if(!db){ const b=['업체명: '+name,'사업자등록번호: '+biz,'홈페이지: '+url,'출장 지역: '+sidos.join(', '),'가격: '+(nego?'가격 협의':('평당 '+(pp||'-')+'원 / 소형 '+(doc.small||'-')+' / 부가세 '+doc.vat+' / '+doc.ext)),'추가 내용: '+doc.extra,'','(동네값 업체 무료등록 신청 · 수집·이용 동의함)'].join('\n');
+    location.href=mailTo('[동네값] 업체 무료등록 신청 - '+name,b); msg.style.color='var(--main)'; msg.textContent='메일 앱이 열립니다. [보내기]를 누르면 접수됩니다. 안 열리면 hope3710@naver.com 으로 보내 주세요.'; return; }
   $('#f-submit').disabled=true;
   try{ await db.doc('regs/'+uid).set(doc); msg.style.color='var(--main)'; msg.textContent='접수됐습니다. 확인 후 노출됩니다.'; }
   catch(err){ msg.textContent=err&&err.code==='invalid_argument'?'이 계정으로는 등록을 저장할 수 없습니다.':'저장 실패 — 잠시 뒤 다시 시도해 주세요.'; }
