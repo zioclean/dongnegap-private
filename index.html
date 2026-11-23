@@ -671,7 +671,7 @@ body[data-grp="isa"] .shop-c,body:not([data-grp="isa"]) .shop-i{display:none}
       <tr><td><b>중간 와이드 배너</b><span class="s">가격비교와 업체목록 사이</span></td><td class="h">본문 중간</td><td class="h">본문 폭×120</td><td>지역별 월</td></tr>
     </tbody>
   </table>
-  <p class="foot-note"><b>오픈 기념: 지역 목록 위 광고 첫 3개월 무료</b> (매달 노출·클릭 리포트 제공). 이후 지역별 월 3~5만 원. 배너는 협의합니다.<br>사이트 주제(이사·청소·생활 서비스 등)와 관련된 업종 광고만 받습니다. 부동산·분양·대부·도박 광고는 받지 않습니다. 의료법 제56조에 따라 병원·의원 등 의료기관 광고도 받지 않습니다. 광고는 가격비교 순위에 영향을 주지 않습니다.</p>
+  <p class="foot-note"><b>광고 요금: 지역별 월 3~5만 원</b> (매달 노출·클릭 리포트 제공). 배너는 협의합니다.<br>사이트 주제(이사·청소·생활 서비스 등)와 관련된 업종 광고만 받습니다. 부동산·분양·대부·도박 광고는 받지 않습니다. 의료법 제56조에 따라 병원·의원 등 의료기관 광고도 받지 않습니다. 광고는 가격비교 순위에 영향을 주지 않습니다.</p>
   <div class="bnr"><p><b>광고 신청</b>유료 광고를 신청할 때만 업체명·사업자번호·담당자 연락처를 받습니다(무료 등록에는 연락처를 받지 않습니다). 신청 창구는 정식 오픈 때 열립니다.</p><a href="#home">가격비교로 돌아가기</a></div>
 </main>
 
@@ -1595,7 +1595,7 @@ function adHTML(k){const a=pickAd(k);
 // 업체에 파는 자리: top·wide·inline·sponsor / 우리가 네트워크 광고(애드센스·애드핏) 붙이는 자리: left·side·side2·mbar
 const NET=['left','side','side2','mbar'];
 const MED=['obgy','ped','ent','im','pharm'];
-function houseAd(){ let g='우리'; try{ g=(typeof AREA!=='undefined'&&AREA&&AREA.gu)||'우리'; }catch(e){} return `<span class="lb">광고</span><a class="hsad" href="#ad"><b>${esc(g)} 동네 손님에게 우리 가게를 알려 보세요</b><small>이 자리 광고 신청 · 오픈 기념 3개월 무료 ›</small></a>`; }
+function houseAd(){ let g='우리'; try{ g=(typeof AREA!=='undefined'&&AREA&&AREA.gu)||'우리'; }catch(e){} return `<span class="lb">광고</span><a class="hsad" href="#ad"><b>${esc(g)} 동네 손님에게 우리 가게를 알려 보세요</b><small>이 자리 광고 문의 ›</small></a>`; }
 function ads(){document.querySelectorAll('[data-slot]').forEach(el=>{const h=adHTML(el.dataset.slot); el.innerHTML=h; el.style.display=h?'':'none';}); topAds();}
 // 상단 배너: 한 줄에 3칸(모바일 1칸), 광고가 더 많으면 4초마다 다음 줄로 내려감
 let topIdx=0, topTimer=null;
