@@ -74,8 +74,9 @@ for f in glob.glob(SC+'/*.json'):
                 for t in reversed(T):
                     if n.endswith(t): n=n[:-len(t)].rstrip()
             n=re.sub(r'\s*(N|↗)$','',n).strip()
-            x['n']=n; x['t']=[t for t in T if t not in ('N','↗')]; x['m']=re.sub(r'\s+',' ',x.get('m') or '')
-        key=(h,sd,gu); pages[key]={'kind':'v','h':h,'sd':sd,'gu':gu,'it':it}
+            x['n']=re.sub(r'^\d+\.\s*','',n); x['t']=[t for t in T if t not in ('N','↗')]; x['m']=re.sub(r'\s+',' ',x.get('m') or '')
+        m_=re.search(r'\(([\d,]+)\)\s*$',r['gu'] or r['sd']); cnt=int(m_.group(1).replace(',','')) if m_ else len(it)
+        key=(h,sd,gu); pages[key]={'kind':'v','h':h,'sd':sd,'gu':gu,'it':it,'cnt':max(cnt,len(it)),'cntok':bool(m_)}
 DSC=os.environ.get('DSC'); DBUDGET=int(os.environ.get('DBUDGET','12500')); dpages={}
 if DSC:
     cand=[]
@@ -153,7 +154,12 @@ for key,P in pages.items():
             ps=sorted(prices); stat=f'<div class="stat"><div><b>{ps[0]:,}원</b><span>목록 중 가장 낮은 값</span></div><div><b>{ps[len(ps)//2]:,}원</b><span>가운데 값</span></div><div><b>{len(it)}곳</b><span>이 페이지 목록</span></div></div>'
         lead=f'{pl} {b} — {c}. 정부·공공기관과 업체가 공개한 자료만 정리했습니다.'
         body=f'<h1>{E_(pl)} {E_(b)}</h1><p class="lead">{E_(lead)}</p>{stat}<a class="cta" href="/{hs}">동네값에서 지도·전체 목록 보기 →</a><ol class="li">{lis}</ol>'
-        title=f'{pl} {b} - 동네값'; desc=f'{pl} {b}: {c}. 정부·업체가 공개한 정보만 모았습니다. '+', '.join(x['n'] for x in it[:3])+' 등.'
+        title=f'{pl} {b} - 동네값'
+        P['minp']=min(prices) if prices and k in ('oil','swim','campg','camp','wed') else None
+        bits=[f"{P['cnt']:,}곳"] if P.get('cntok') else []
+        if k=='oil' and prices: bits.append(f"휘발유 최저 {min(prices):,}원"); m2=re.search(r'평균보다 ([\d,]+)원 쌈',it[0]['p']); bits[-1]+=(f"(평균보다 {m2.group(1)}원 쌈)" if m2 else '')
+        elif P['minp']: bits.append(f"최저 {P['minp']:,}원")
+        desc=f'{pl} {b} '+' · '.join(bits)+' — '+c+'. '+', '.join(x['n'] for x in it[:3])+' 등. 정부·업체 공개 자료 기준.'
     else:
         hd=P['hd'][1:] if P['hd'] and P['hd'][0]=='번호' else P['hd']; rows=[r[1:] if P['hd'] and P['hd'][0]=='번호' else r for r in P['rows']]
         rows=[[re.sub(r'(사업자 확인)+','',x).strip() for x in r] for r in rows]
@@ -185,7 +191,7 @@ for (k,sd,gu,dg),D in dpages.items():
     sib=sorted(d for (hh,s2,g2,d) in dpages if hh==k and s2==sd and g2==gu and d!=dg)
     if sib: body+=f'<h2>{E_(gu)} 다른 동네 {E_(b_)}</h2><div class="chips">'+''.join(f'<a href="{E_(url(k,sd,gu)+slug(d)+"/")}">{E_(d)}</a>' for d in sib)+'</div>'
     body+=f'<h2>{E_(gu)} 전체</h2><div class="chips"><a href="{E_(url(k,sd,gu))}">{E_(gu)} {E_(b_)} 전체 보기</a></div>'
-    W(u,page((k,sd,gu),None,body,f'{dg} {b_} ({sd} {gu}) - 동네값',f'{pl} {b_} {D["cnt"]}곳: {c_}. '+', '.join(x['n'] for x in it[:3])+' 등.',crumbs))
+    W(u,page((k,sd,gu),None,body,f'{dg} {b_} ({sd} {gu}) - 동네값',f'{pl} {b_} {D["cnt"]}곳 — {c_}. '+', '.join(x['n'] for x in it[:3])+' 등.',crumbs))
 # 분야 첫 페이지
 for k in sorted({k for k,_,_ in pages}):
     a,b,c,med,hs=cinfo(k); sds=sorted({sd for kk,sd,_ in pages if kk==k})
@@ -197,7 +203,9 @@ for k in sorted({k for k,_,_ in pages}):
 # 전체 목록(사이트맵 겸 안내 페이지)
 ks=sorted({k for k,_,_ in pages},key=lambda x:cinfo(x)[0])
 body='<h1>지역별 생활비 정보 전체 보기</h1><div class="chips">'+''.join(f'<a href="/{E_(slug(cinfo(k)[0]))}/">{E_(cinfo(k)[1])}</a>' for k in ks)+'</div>'
+body+='<h2>더 보기</h2><div class="chips"><a href="/동네/">동네별 종합 정보</a><a href="/순위/">우리 동네는 몇 위? (순위)</a></div>'
 W('/지역별/',page(('','',''),None,body,'지역별 생활비 정보 - 동네값','주유소·약국·수영장·어린이집·학원·청소·이사 등 지역별 생활비 정보를 정부·업체 공개 자료로 모았습니다.',[('동네값','/'),('지역별','/지역별/')]))
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'gen_hub.py'),encoding='utf-8').read())
 from urllib.parse import quote
 sm='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<url><loc>https://dongnegap.com/</loc><lastmod>'+TODAY+'</lastmod></url>\n'+''.join(f'<url><loc>https://dongnegap.com{quote(p)}</loc><lastmod>{TODAY}</lastmod></url>\n' for p in written)+'</urlset>\n'
 open(OUT+'/sitemap.xml','w').write(sm); open(OUT+'/seo.css','w').write(CSS)
