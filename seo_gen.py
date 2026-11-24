@@ -82,6 +82,7 @@ if os.path.exists(mp):
         c=r['c']
         if c not in MAINCAT or len(r['rows'])<3: continue
         sd=sdn(r['sd']); gu=clean(r['gu'])
+        if gu: continue   # 업체 출장지역이 시·도 단위라 시·군·구 페이지는 중복이 됨
         pages[('m:'+c,sd,gu)]={'kind':'m','c':c,'sd':sd,'gu':gu,'hd':r['hd'],'rows':r['rows']}
 def cinfo(k):
     if k.startswith('m:'):
@@ -137,6 +138,9 @@ for key,P in pages.items():
     else:
         hd=P['hd'][1:] if P['hd'] and P['hd'][0]=='번호' else P['hd']; rows=[r[1:] if P['hd'] and P['hd'][0]=='번호' else r for r in P['rows']]
         rows=[[re.sub(r'(사업자 확인)+','',x).strip() for x in r] for r in rows]
+        for r in rows: r[0]=re.sub(r'(\s+(이사|입주|줄눈|세탁기|소독|청소도 함|운영사 관련|이사 허가|가맹))+$','',r[0]).strip()
+        keep=[i for i in range(len(hd)) if len({r[i] for r in rows if i<len(r)})>1 or i==0]
+        hd=[hd[i] for i in keep]; rows=[[r[i] for i in keep if i<len(r)] for r in rows]
         tb='<table><tr>'+''.join(f'<th>{E_(x)}</th>' for x in hd)+'</tr>'+''.join('<tr>'+''.join(f'<td>{E_(x[:160])}</td>' for x in r)+'</tr>' for r in rows)+'</table>'
         body=f'<h1>{E_(pl)} {E_(b)}</h1><p class="lead">{E_(pl)}에 출장 가능한 업체 중 홈페이지·블로그에 가격을 공개한 곳을 {E_(c)}로 보여 드립니다.</p><a class="cta" href="/#home">동네값에서 전체 업체·가격 계산기 보기 →</a>{tb}'
         title=f'{pl} {b} - 공개된 가격 비교 | 동네값'; desc=f'{pl} {b}: 업체가 공개한 가격을 낮은 순으로 모았습니다. '+', '.join(r[0][:20] for r in rows[:3])+' 등.'
