@@ -1,3 +1,6 @@
+<!doctype html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-site-verification" content="EQht8YlnZBIwfIkeE2z3AEiEvAhxpZ1UW1A24utSRHU" />
@@ -509,6 +512,8 @@ body[data-grp="isa"] .shop-c,body:not([data-grp="isa"]) .shop-i{display:none}
 @media (max-width:700px){.gnb .util{font-size:12.5px;gap:8px;margin-left:auto}.gnb .util a[href="#shop"]{background:#FFF1E6;color:#D9480F;font-weight:800;padding:3px 9px;border-radius:14px}.gnb .util .reg-link{display:none}.gnb .in{gap:8px}.locbtn{font-size:13.5px;padding:0 2px}}
 </style>
 
+</head>
+<body>
 <header class="gnb"><div class="in">
   <a class="logo" href="#hub">동네값</a><button type="button" class="locbtn" id="locBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg><span id="locTxt">우리 동네 설정</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
   <form class="sch" id="schForm" role="search"><input id="q" type="search" placeholder="업체명 검색" aria-label="업체명 검색"><button type="submit">검색</button></form>
@@ -3189,3 +3194,6 @@ $('#admList').addEventListener('click',async e=>{
   }catch(err){ e.target.disabled=false; }
 });
 </script>
+
+</body>
+</html>
