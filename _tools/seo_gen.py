@@ -76,6 +76,25 @@ for f in glob.glob(SC+'/*.json'):
             n=re.sub(r'\s*(N|↗)$','',n).strip()
             x['n']=n; x['t']=[t for t in T if t not in ('N','↗')]; x['m']=re.sub(r'\s+',' ',x.get('m') or '')
         key=(h,sd,gu); pages[key]={'kind':'v','h':h,'sd':sd,'gu':gu,'it':it}
+DSC=os.environ.get('DSC'); DBUDGET=int(os.environ.get('DBUDGET','12500')); dpages={}
+if DSC:
+    cand=[]
+    for f in glob.glob(DSC+'/*.json'):
+        for r in json.load(open(f)):
+            h=r['hh']; sd=sdn(r['sd']); gu=clean(r['gu']); dg=clean(r['dg'])
+            m=re.search(r'\(([\d,]+)\)\s*$',r['dg']); cnt=int(m.group(1).replace(',','')) if m else len(r['it'])
+            if cnt<5 or len(r['it'])<5 or not gu or not dg: continue
+            for x in r['it']:
+                n=x['n']; T=[t for t in x.get('t',[]) if t]; tail=''.join(T)
+                if tail and n.endswith(tail): n=n[:-len(tail)].rstrip()
+                else:
+                    for t in reversed(T):
+                        if n.endswith(t): n=n[:-len(t)].rstrip()
+                x['n']=re.sub(r'\s*(N|↗)$','',n).strip(); x['t']=[t for t in T if t not in ('N','↗')]; x['m']=re.sub(r'\s+',' ',x.get('m') or '')
+            cand.append((cnt,h,sd,gu,dg,r['it']))
+    cand.sort(key=lambda c:-c[0])
+    for cnt,h,sd,gu,dg,it in cand[:DBUDGET]: dpages[(h,sd,gu,dg)]={'it':it,'cnt':cnt}
+    print('동 후보',len(cand),'채택',len(dpages))
 mp=SC+'/main.json'
 if os.path.exists(mp):
     for r in json.load(open(mp)):
@@ -151,9 +170,22 @@ for key,P in pages.items():
     else:
         sub=sorted(bysd[(k,sd)])
         if sub: body+=f'<h2>{E_(sd)} 시·군·구별 {E_(b)}</h2><div class="chips">'+''.join(f'<a href="{E_(url(k,sd,g))}">{E_(g)}</a>' for g in sub)+'</div>'
+    if gu:
+        dl=sorted(d for (hh,s2,g2,d) in dpages if hh==k and s2==sd and g2==gu)
+        if dl: body+=f'<h2>{E_(pl)} 동·읍·면별 {E_(b)}</h2><div class="chips">'+''.join(f'<a href="{E_(url(k,sd,gu)+slug(d)+"/")}">{E_(d)}</a>' for d in dl)+'</div>'
     oth=sorted(byplace[(sd,gu)]-{k},key=lambda x:cinfo(x)[0])
     if oth: body+=f'<h2>{E_(pl)}의 다른 생활비 정보</h2><div class="chips">'+''.join(f'<a href="{E_(url(x,sd,gu))}">{E_(cinfo(x)[1])}</a>' for x in oth)+'</div>'
     W(url(k,sd,gu),page(key,P,body,title,desc,crumbs))
+# 동·읍·면 페이지
+for (k,sd,gu,dg),D in dpages.items():
+    a_,b_,c_,med,hs=cinfo(k); pl=f'{sd} {gu} {dg}'; it=D['it']; u=url(k,sd,gu)+slug(dg)+'/'
+    crumbs=[('동네값','/'),(a_,'/'+slug(a_)+'/'),(sd,url(k,sd,'')),(gu,url(k,sd,gu)),(dg,u)]
+    lis=''.join(f'<li><div><div class="nm">{E_(x["n"])}'+''.join(f'<span class="tg">{E_(t)}</span>' for t in x.get('t',[])[:2] if len(t)<24)+'</div>'+''.join(f'<div class="ad">{E_(l)}</div>' for l in x['a'][:3])+f'</div><div class="pr">{E_(x["p"].strip())}</div></li>' for x in it)
+    body=f'<h1>{E_(dg)} {E_(b_)} <span style="font-size:15px;color:#6b7280">{E_(sd)} {E_(gu)}</span></h1><p class="lead">{E_(pl)} {E_(b_)} {D["cnt"]}곳 — {E_(c_)}. 정부·공공기관과 업체가 공개한 자료만 정리했습니다.</p><a class="cta" href="/{hs}">동네값에서 지도·전체 목록 보기 →</a><ol class="li">{lis}</ol>'
+    sib=sorted(d for (hh,s2,g2,d) in dpages if hh==k and s2==sd and g2==gu and d!=dg)
+    if sib: body+=f'<h2>{E_(gu)} 다른 동네 {E_(b_)}</h2><div class="chips">'+''.join(f'<a href="{E_(url(k,sd,gu)+slug(d)+"/")}">{E_(d)}</a>' for d in sib)+'</div>'
+    body+=f'<h2>{E_(gu)} 전체</h2><div class="chips"><a href="{E_(url(k,sd,gu))}">{E_(gu)} {E_(b_)} 전체 보기</a></div>'
+    W(u,page((k,sd,gu),None,body,f'{dg} {b_} ({sd} {gu}) - 동네값',f'{pl} {b_} {D["cnt"]}곳: {c_}. '+', '.join(x['n'] for x in it[:3])+' 등.',crumbs))
 # 분야 첫 페이지
 for k in sorted({k for k,_,_ in pages}):
     a,b,c,med,hs=cinfo(k); sds=sorted({sd for kk,sd,_ in pages if kk==k})
